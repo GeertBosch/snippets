@@ -1,9 +1,11 @@
 #include <cstdint>
 #include <cstdio>
+#include <cstring>
 #include <string>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+
 
 #include <ctime>
 #include <ratio>
@@ -19,23 +21,26 @@ void bench(u64 bin) {
 
     auto t1 = high_resolution_clock::now();
     u64 x = bin;
-    for (int i = 0; i < 1E6; i++) {
+    const u64 iterations = 1E8;
+    for (int i = 0; i < iterations; i++) {
         bin2hex(x, out + i * 16 % 1024);
         x += 0x0123456789abcdefull;
     }
     auto t2 = high_resolution_clock::now();
     x = bin;
-    for (int i = 0; i < 1E6; i++) {
+    for (int i = 0; i < iterations; i++) {
         bin2hex2(x, out2 + i * 16 % 1024);
         x += 0x0123456789abcdefull;
     }
     auto t3 = high_resolution_clock::now();
     duration<double> time_span1 = duration_cast<duration<double>>(t2 - t1);
     duration<double> time_span2 = duration_cast<duration<double>>(t3 - t2);
-    cout << "bin2hex: " << time_span1.count()*1000 << " nanoseconds" << endl;
-    cout << "bin2hex2: " << time_span2.count()*1000 << " nanoseconds" << endl;
-    cout << "out: " << out << endl;
-    cout << "out2: " << out2 << endl;
+    cout << "bin2hex: " << time_span1.count()*(1E9 / iterations) << " nanoseconds" << endl;
+    cout << "bin2hex2: " << time_span2.count()*(1E9 / iterations) << " nanoseconds" << endl;
+    if (memcmp(out, out2, 1025)) {
+        cerr << "Miscompare: " << out << " != " << out2 << "!\n";
+        std::terminate();
+    }
 }
 
 int main(int argc, char** argv) {
