@@ -19,6 +19,7 @@ union m128 {
     __m128i v;
     uint64_t q[2];
     char b[16];
+    m128(__m128i v) : v(v) {}
     m128(u64 hi, u64 lo) : q{hi, lo} { }
     m128(const char b[16]) {
         std::memcpy(this->b, b, 16);
