@@ -8,8 +8,8 @@ using namespace std;
 
 struct S2Point {
 	S2Point(double lat, double lng) {
-		double phi = lat * (M_PI / 180);
-		double theta = lng * (M_PI / 180);
+		volatile double phi = lat * (M_PI / 180);
+		volatile double theta = lng * (M_PI / 180);
 		cout << "phi = " << phi << ", theta = " << theta << "\n";
 		double sinphi = sin(phi);
 		double cosphi = cos(phi);
