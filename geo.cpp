@@ -75,17 +75,20 @@ struct S2Cell {
 
 int main(int argc, char **argv) {
 	cout << setprecision(16);
+	double lat = -33.430605992622304;
+	double lng = -70.74506795406342;
 
-	auto point = S2Point(48, -18);
 	if (argc >= 3) {
-		double lat = atof (argv[1]);
-		double lng = atof (argv[2]);
-		cout << "lat = " << lat << ", lng = " << lng << "\n";
-		point = S2Point (lat, lng);
+		lat = atof (argv[1]);
+		lng = atof (argv[2]);
 	}
+	cout << "lat = " << lat << ", lng = " << lng << "\n";
+
+	auto point = S2Point (lat, lng);
+        cout << "point = " << point.toString() << "\n";
 
 	auto cell = S2Cell(point);
-        cout << "point = " << point.toString() << "\n";
 	cout << "cell = " << cell.toString() << "\n";
+
 	return 0;
 }
